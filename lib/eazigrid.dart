@@ -1,6 +1,7 @@
 library eazigrid;
 
 import 'dart:async';
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -28,29 +29,34 @@ class EaziGrid extends StatefulWidget {
 class _EaziGridState extends State<EaziGrid> {
   String _alignData = '';
   late Alignment alignment;
-  late List<Widget> children;
-  late double maxWidth;
-  late double maxHeight;
+  double maxWidth = 0;
+  double maxHeight = 0;
 
-  Map<dynamic, RowWidget> usedRowKeys = {};
+  LinkedHashMap<dynamic, RowWidget> usedRowKeys = LinkedHashMap<dynamic, RowWidget>();
 
 
   @override
   void initState() {
-    this.children = widget.children;
     this.alignment = widget.alignment;
     _alignData = alignment.toString().toLowerCase();
-    RowWidget startRow = _getItemsRow(context, children);
+    RowWidget startRow = _getItemsRow(context, widget.children.toList());
     usedRowKeys[startRow.key] = startRow;
   }
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      updateRowMap(context);
+      updateRowMapForSmallerScreens(context);
     });
     return LayoutBuilder(
         builder: (context, constraints){
+          if(maxWidth<constraints.maxWidth){
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              maxWidth = constraints.maxWidth;
+              maxHeight = constraints.maxWidth;
+              drawBackWidgetFromBottomRow(context);
+            });
+          }
           maxWidth = constraints.maxWidth;
           maxHeight = constraints.maxWidth;
           return Container(
@@ -77,7 +83,6 @@ class _EaziGridState extends State<EaziGrid> {
     }
   }
 
-
   MainAxisAlignment _getHorizontalAlignment() {
     if(_alignData.contains('left')){
       return MainAxisAlignment.start;
@@ -97,35 +102,35 @@ class _EaziGridState extends State<EaziGrid> {
     );
   }
 
-  updateRowMap(BuildContext context){
-    Map<dynamic, RowWidget> usedRowKeys = this.usedRowKeys;
-    List<Widget> lastChildren = [];
+  updateRowMapForSmallerScreens(BuildContext context){
+    LinkedHashMap<dynamic, RowWidget> usedRowKeys = this.usedRowKeys;
+    List<Widget> addToStartChildren = [];
     bool madeChange = false;
-    print('ran');
+    // print('ran');
     for(GlobalKey globalKey in usedRowKeys.keys){
-      print('globalKey.currentContext!.size!.width: ${globalKey.currentContext!.size!.width}, maxWidth: ${MediaQuery.of(context).size.width}');
-      if(lastChildren.length > 0){
+      // print('globalKey.currentContext!.size!.width: ${globalKey.currentContext!.size!.width}, maxWidth: ${MediaQuery.of(context).size.width}');
+      if(addToStartChildren.length > 0){
         var tempList = usedRowKeys[globalKey]!.children;
-        tempList.insertAll(0, lastChildren);
+        tempList.insertAll(0, addToStartChildren);
         if(globalKey.currentContext!.size!.width >= maxWidth){
-          lastChildren=[tempList.removeLast()];
+          addToStartChildren=[tempList.removeLast()];
         }else{
-          lastChildren=[];
+          addToStartChildren=[];
         }
         this.usedRowKeys[globalKey] = _getItemsRow(context, tempList, globalKey);
       }else{
         if (globalKey.currentContext!.size!.width >= maxWidth) {
           if (usedRowKeys[globalKey]!.children.length == 1) continue;
           var tempList = usedRowKeys[globalKey]!.children;
-          lastChildren.add(tempList.removeLast());
+          addToStartChildren.add(tempList.removeLast());
           this.usedRowKeys[globalKey] = _getItemsRow(context, tempList, globalKey);
           // Push child to next row - (1) remove last 2 children of next row child if size > maxSize
           madeChange = true;
         }
       }
     }
-    if(lastChildren.length > 0){
-      RowWidget startRow = _getItemsRow(context, lastChildren);
+    if(addToStartChildren.length > 0){
+      RowWidget startRow = _getItemsRow(context, addToStartChildren);
       this.usedRowKeys[startRow.key] = startRow;
     }
     if(madeChange){
@@ -134,6 +139,15 @@ class _EaziGridState extends State<EaziGrid> {
 
       });
     }
+  }
+
+  drawBackWidgetFromBottomRow(BuildContext context){
+    usedRowKeys =  LinkedHashMap<dynamic, RowWidget>();
+    RowWidget startRow = _getItemsRow(context, widget.children.toList());
+    usedRowKeys[startRow.key] = startRow;
+      setState(() {
+
+      });
   }
 
 }
