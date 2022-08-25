@@ -32,7 +32,7 @@ class _EaziGridState extends State<EaziGrid> {
   late double maxWidth;
   late double maxHeight;
 
-  Map<dynamic, Row> usedRowKeys = {};
+  Map<dynamic, RowWidget> usedRowKeys = {};
 
 
   @override
@@ -40,7 +40,7 @@ class _EaziGridState extends State<EaziGrid> {
     this.children = widget.children;
     this.alignment = widget.alignment;
     _alignData = alignment.toString().toLowerCase();
-    Row startRow = _getItemsRow(context, children);
+    RowWidget startRow = _getItemsRow(context, children);
     usedRowKeys[startRow.key] = startRow;
   }
 
@@ -88,28 +88,27 @@ class _EaziGridState extends State<EaziGrid> {
     }
   }
 
-  Row _getItemsRow(BuildContext context, List<Widget> tempList, [GlobalKey? globalKey]) {
-    return Row(
+  RowWidget _getItemsRow(BuildContext context, List<Widget> tempList, [GlobalKey? globalKey]) {
+    return RowWidget(
       // mainAxisSize: MainAxisSize.min,
       key: globalKey??GlobalKey(),
       mainAxisAlignment: _getHorizontalAlignment(),
-      children: children,
+      children: tempList,
     );
   }
 
   updateRowMap(BuildContext context){
-    Map<dynamic, Row> usedRowKeys = this.usedRowKeys;
+    Map<dynamic, RowWidget> usedRowKeys = this.usedRowKeys;
     List<Widget> lastChildren = [];
     bool madeChange = false;
     print('ran');
     for(GlobalKey globalKey in usedRowKeys.keys){
-      print('globalKey.currentContext!.size!.width: ${globalKey.currentContext!.size!.width}, maxWidth: $maxWidth');
-      if(lastChildren.length == 0){
+      print('globalKey.currentContext!.size!.width: ${globalKey.currentContext!.size!.width}, maxWidth: ${MediaQuery.of(context).size.width}');
+      if(lastChildren.length > 0){
         var tempList = usedRowKeys[globalKey]!.children;
         tempList.insertAll(0, lastChildren);
         if(globalKey.currentContext!.size!.width >= maxWidth){
-          lastChildren=[tempList.last];
-          tempList.removeLast();
+          lastChildren=[tempList.removeLast()];
         }else{
           lastChildren=[];
         }
@@ -117,9 +116,8 @@ class _EaziGridState extends State<EaziGrid> {
       }else{
         if (globalKey.currentContext!.size!.width >= maxWidth) {
           if (usedRowKeys[globalKey]!.children.length == 1) continue;
-          lastChildren.add(usedRowKeys[globalKey]!.children.last);
           var tempList = usedRowKeys[globalKey]!.children;
-          tempList.removeLast();
+          lastChildren.add(tempList.removeLast());
           this.usedRowKeys[globalKey] = _getItemsRow(context, tempList, globalKey);
           // Push child to next row - (1) remove last 2 children of next row child if size > maxSize
           madeChange = true;
@@ -127,10 +125,11 @@ class _EaziGridState extends State<EaziGrid> {
       }
     }
     if(lastChildren.length > 0){
-      Row startRow = _getItemsRow(context, lastChildren);
-      usedRowKeys[startRow.key] = startRow;
+      RowWidget startRow = _getItemsRow(context, lastChildren);
+      this.usedRowKeys[startRow.key] = startRow;
     }
     if(madeChange){
+      print('is to make change');
       setState(() {
 
       });
@@ -140,6 +139,28 @@ class _EaziGridState extends State<EaziGrid> {
 }
 
 //TODO: Create custom row with context.
+class RowWidget extends StatefulWidget {
+  const RowWidget({Key? key, required this.mainAxisAlignment, required this.children, }) : super(key: key);
+
+  final  List<Widget> children;
+  final  MainAxisAlignment mainAxisAlignment;
+
+  @override
+  State<RowWidget> createState() => _RowWidgetState();
+}
+
+class _RowWidgetState extends State<RowWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: widget.mainAxisAlignment,
+        children: widget.children,
+      ),
+    );
+  }
+}
 
 String genRandomString(int length) {
   String data= 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';

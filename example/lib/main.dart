@@ -56,22 +56,24 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: EaziGrid(children: [
-        for(int i=0; i<30; i++)
-          Container(
-            color: Colors.blue,
-            margin: EdgeInsets.all(10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(Icons.description, color: Colors.white,),
-                const SizedBox(height: 5,),
-                Text('test item: $i', style: TextStyle(color: Colors.white),)
-              ],
-            ),
-          )
-      ]),
+      body: SingleChildScrollView(
+        child: EaziGrid(children: [
+          for(int i=0; i<30; i++)
+            Container(
+              color: Colors.blue,
+              margin: EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.description, color: Colors.white,),
+                  const SizedBox(height: 5,),
+                  Text('test item: $i', style: TextStyle(color: Colors.white),)
+                ],
+              ),
+            )
+        ]),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
