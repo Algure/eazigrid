@@ -25,14 +25,13 @@ class EaziGrid extends StatefulWidget {
   /// Row to Grid Widget. Should be child of constrained parent widget i.e width
   /// of parent widget must be explicitly defined and vertical height shrinks to wrap resulting grid if
   /// left undefined.
-  EaziGrid({
+  const EaziGrid({
     required this.children,
     this.horizontalAlignment = EaziAlignment.start,
     this.verticalAlignment = EaziAlignment.start,
     this.isScrollable = false
-  }){
-    if(isScrollable)assert(verticalAlignment==EaziAlignment.start);
-  }
+  });
+
 
   @override
   State<EaziGrid> createState() => _EaziGridState();
@@ -43,6 +42,7 @@ class _EaziGridState extends State<EaziGrid> {
   double maxWidth = 0;
   double maxHeight = 0;
   LinkedHashMap<dynamic, RowWidget> usedRowKeys = LinkedHashMap<dynamic, RowWidget>();
+  LinkedHashMap<double, List<List<int>>> widthRowChildrenMap = LinkedHashMap<double, List<List<int>>>();
 
   @override
   void initState() {
@@ -51,6 +51,8 @@ class _EaziGridState extends State<EaziGrid> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.isScrollable)assert(widget.verticalAlignment==EaziAlignment.start);
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       updateRowMapForSmallerScreens(context);
     });
@@ -113,6 +115,21 @@ class _EaziGridState extends State<EaziGrid> {
       children: tempList,
     );
     usedRowKeys[row.key] = row;
+  }
+
+
+  RowWidget _getAndSaveRowForRange(BuildContext context, List<int> indices, [GlobalKey? globalKey]) {
+    final row = RowWidget(
+      key: globalKey??GlobalKey(),
+      mainAxisAlignment: _getAlignmentFromEaziAlignment(widget.horizontalAlignment),
+      children: widget.children.sublist(indices[0], indices.last+1),
+    );
+    usedRowKeys[row.key] = row;
+    return row;
+  }
+
+  void clearMapToRebuild(){
+    widthRowChildrenMap.clear();
   }
 
   updateRowMapForSmallerScreens(BuildContext context){
