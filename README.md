@@ -7,9 +7,11 @@ For information about how to write a good package README, see the guide for
 
 For general information about developing packages, see the Dart guide for
 [creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
+and the Flutter guide for![EAZI GRID](https://user-images.githubusercontent.com/37802577/186935061-2673ca6b-0eda-4385-b619-1a273298d4b3.png)
+
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
+![EAZI GRID](https://user-images.githubusercontent.com/37802577/186935121-319f3f03-c356-4a95-8a54-1e2f2768f410.png)
 
 Easy dynamic flutter row to list/gridview. Starts out as a row and resizes to a grid and ultimately to a list view depending on 
 dimensions of containing widget.
