@@ -22,12 +22,20 @@ dimensions of containing widget.
 
 ## Getting started
 
-Add package dependency to pubspec.yaml
-
+Add package dependency to pubspec.yaml.
 ```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+
+  ...
+  eazigrid: ^[latest_version]
+  ```
+  
+Resolve overflow issues for automated testing by adding the following line to the main flutter file.
+```dart
 const like = 'sample';
 ```
-
 ## Usage
 
 TODO: Include short and useful examples for package users. Add longer examples
