@@ -5,8 +5,11 @@ import 'package:eazigrid/src/eazi_row_widget.dart';
 import 'package:eazigrid/src/utilities.dart';
 import 'package:flutter/material.dart';
 
+///
 class EaziGrid extends StatefulWidget {
   bool isScrollable;
+
+  /// horizontalAlignment aligns children in each row to any of the options in [EaziAlignment]
   EaziAlignment horizontalAlignment;
   EaziAlignment verticalAlignment;
   List<Widget> children;
@@ -16,22 +19,22 @@ class EaziGrid extends StatefulWidget {
     this.horizontalAlignment = EaziAlignment.start,
     this.verticalAlignment = EaziAlignment.start,
     this.isScrollable = false
-  });
+  }){
+  }
 
   @override
   State<EaziGrid> createState() => _EaziGridState();
 }
 
-class _EaziGridState extends State<EaziGrid> {
 
+class _EaziGridState extends State<EaziGrid> {
   double maxWidth = 0;
   double maxHeight = 0;
   LinkedHashMap<dynamic, RowWidget> usedRowKeys = LinkedHashMap<dynamic, RowWidget>();
 
-
   @override
   void initState() {
-    _addItemsRow(context, widget.children);
+    addItemsRow(context, widget.children);
   }
 
   @override
@@ -48,13 +51,14 @@ class _EaziGridState extends State<EaziGrid> {
           }
           maxWidth = constraints.maxWidth;
           maxHeight = constraints.maxWidth;
+
           if(widget.isScrollable){
-              return SingleChildScrollView(
-                child: _getMainWidget(),
-              );
-            }else {
-              return _getMainWidget();
-            }
+            return SingleChildScrollView(
+              child: _getMainWidget(),
+            );
+          }else {
+            return _getMainWidget();
+          }
         }
     );
   }
@@ -90,7 +94,7 @@ class _EaziGridState extends State<EaziGrid> {
     }
   }
 
-  void _addItemsRow(BuildContext context, List<Widget> tempList, [GlobalKey? globalKey]) {
+  void addItemsRow(BuildContext context, List<Widget> tempList, [GlobalKey? globalKey]) {
     final row = RowWidget(
       key: globalKey??GlobalKey(),
       mainAxisAlignment: _getAlignmentFromEaziAlignment(widget.horizontalAlignment),
@@ -103,8 +107,9 @@ class _EaziGridState extends State<EaziGrid> {
     bool madeChange = false;
     final usedRowKeys = this.usedRowKeys;
     List<Widget> lastChildren = [];
+    double k=0;
     for(GlobalKey globalKey in usedRowKeys.keys){
-      print('globalKey.currentContext!.size!.width: ${globalKey.currentContext!.size!.width}, maxWidth: ${MediaQuery.of(context).size.width}');
+      MediaQuery.of(context).size.width; /// This weird line must be present 🤨
       if(lastChildren.length > 0){
         var tempList = usedRowKeys[globalKey]!.children;
         tempList.insertAll(0, lastChildren);
@@ -113,20 +118,20 @@ class _EaziGridState extends State<EaziGrid> {
         }else{
           lastChildren.clear();
         }
-        _addItemsRow(context, tempList, globalKey);
+        addItemsRow(context, tempList, globalKey);
       }else{
         if (globalKey.currentContext!.size!.width >= maxWidth) {
           if (usedRowKeys[globalKey]!.children.length == 1) continue;
           var tempList = usedRowKeys[globalKey]!.children;
           lastChildren.add(tempList.removeLast());
-          _addItemsRow(context, tempList, globalKey);
+          addItemsRow(context, tempList, globalKey);
           // Push child to next row - (1) remove last 2 children of next row child if size > maxSize
           madeChange = true;
         }
       }
     }
     if(lastChildren.length > 0){
-      _addItemsRow(context, lastChildren);
+      addItemsRow(context, lastChildren);
     }
     if(madeChange){
       rebuild();
@@ -135,7 +140,7 @@ class _EaziGridState extends State<EaziGrid> {
 
   drawBackWidgetFromBottomRow(BuildContext context){
     usedRowKeys.clear();
-    _addItemsRow(context, widget.children.toList());
+    addItemsRow(context, widget.children.toList());
     rebuild();
   }
 

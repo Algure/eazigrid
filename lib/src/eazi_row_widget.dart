@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Row component widgets seperated to assign individual BuildContexts to GlobalKeys used in
+/// [EaziGrid]'s [updateRowMapForSmallerScreens] method
+///
 class RowWidget extends StatefulWidget {
   const RowWidget({Key? key,
     required this.mainAxisAlignment,

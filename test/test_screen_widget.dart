@@ -7,7 +7,6 @@ class MyTestApp extends StatelessWidget {
   MyTestApp({Key? key,  this.totalItems = 30, this.widgetHeight=720, this.widgetWidth=512})
       : super(key: key){
     WidgetsFlutterBinding.ensureInitialized();
-    FlutterError.onError = _onError_ignoreOverflowErrors as FlutterExceptionHandler?;
   }
 
   final int totalItems;
@@ -40,7 +39,11 @@ class MyTestApp extends StatelessWidget {
     var exception = details.exception;
     if (exception is FlutterError) {
       ifIsOverflowError = !exception.diagnostics.any(
-          (e) => e.value.toString().startsWith("A RenderFlex overflowed by"));
+          (e) {
+            final errorVal =e.value.toString();
+            return errorVal.startsWith("A RenderFlex overflowed by")
+                && errorVal.contains("eazi_row_widget.dart");
+          });
     }
     // Ignore if is overflow error.
     if (ifIsOverflowError) {
