@@ -31,8 +31,8 @@ dependencies:
   ...
   eazigrid: ^[latest_version]
   ```
-  
-Resolve overflow issues for automated testing by adding the following line to the main method in the main flutter file [as shown in the example](https://github.com/Algure/eazigrid/blob/8b2cab3258a0a1fd33dcea268e47bb8b94b057ea/example/lib/main.dart#L6)
+ 
+Resolve overflow issues for automated testing by adding the following line to the main method in the main flutter file as shown in the [example](https://github.com/Algure/eazigrid/blob/8b2cab3258a0a1fd33dcea268e47bb8b94b057ea/example/lib/main.dart#L6)
 ```dart
   EaziGridFlowHandler.handleEaziError();
 ```
