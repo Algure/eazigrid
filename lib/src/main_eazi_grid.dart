@@ -41,7 +41,6 @@ class EaziGrid extends StatefulWidget {
 class _EaziGridState extends State<EaziGrid> {
   double maxWidth = 0;
   LinkedHashMap<dynamic, RowWidget> usedRowKeys = LinkedHashMap<dynamic, RowWidget>();
-  LinkedHashMap<double, List<List<int>>> widthRowChildrenMap = LinkedHashMap<double, List<List<int>>>();
 
   @override
   void initState() {
@@ -114,21 +113,12 @@ class _EaziGridState extends State<EaziGrid> {
   }
 
 
-  void clearMapToRebuild(){
-    widthRowChildrenMap.clear();
-  }
 
   updateRowMapForSmallerScreens(BuildContext context){
     bool madeChange = false;
     final usedRowKeys = this.usedRowKeys;
     List<Widget> lastChildren = [];
 
-    List<List<int>> cache = [];
-    int startIndex = 0;
-    updateCache(List<Widget> tempList){
-      cache.add([startIndex, startIndex+tempList.length]);
-      startIndex+=tempList.length;
-    }
     for(GlobalKey globalKey in usedRowKeys.keys){
       MediaQuery.of(context).size.width; /// This weird line must be present to shrink width 🤨
       if(lastChildren.length > 0){
@@ -140,8 +130,6 @@ class _EaziGridState extends State<EaziGrid> {
           lastChildren.clear();
         }
         addItemsRow(context, tempList, globalKey);
-        // caching screen indices
-        updateCache(tempList);
       }else{
         if (globalKey.currentContext!.size!.width >= maxWidth) {
           if (usedRowKeys[globalKey]!.children.length == 1) continue;
@@ -150,28 +138,20 @@ class _EaziGridState extends State<EaziGrid> {
           addItemsRow(context, tempList, globalKey);
           // Push child to next row - (1) remove last 2 children of next row child if size > maxSize
           madeChange = true;
-          // caching screen indices
-          updateCache(tempList);
         }
       }
     }
     if(lastChildren.length > 0){
       addItemsRow(context, lastChildren);
-      updateCache(lastChildren);
     }
-    widthRowChildrenMap[maxWidth] = cache;
     if(madeChange){
       rebuild();
     }
   }
 
   adjustForLargeScreen(BuildContext context){
-    if(widthRowChildrenMap.containsKey(maxWidth)){
-      rebuildFromCache(maxWidth);
-    }else{
-      usedRowKeys.clear();
-      addItemsRow(context, widget.children.toList());
-    }
+    usedRowKeys.clear();
+    addItemsRow(context, widget.children.toList());
     rebuild();
   }
 
@@ -179,9 +159,4 @@ class _EaziGridState extends State<EaziGrid> {
     if(mounted) setState(() {});
   }
 
-  void rebuildFromCache(double maxWidth) {
-    for(final indexList in widthRowChildrenMap[maxWidth]!){
-
-    }
-  }
 }
