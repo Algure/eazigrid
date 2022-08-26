@@ -40,7 +40,6 @@ class EaziGrid extends StatefulWidget {
 
 class _EaziGridState extends State<EaziGrid> {
   double maxWidth = 0;
-  double maxHeight = 0;
   LinkedHashMap<dynamic, RowWidget> usedRowKeys = LinkedHashMap<dynamic, RowWidget>();
   LinkedHashMap<double, List<List<int>>> widthRowChildrenMap = LinkedHashMap<double, List<List<int>>>();
 
@@ -52,7 +51,6 @@ class _EaziGridState extends State<EaziGrid> {
   @override
   Widget build(BuildContext context) {
     if(widget.isScrollable)assert(widget.verticalAlignment==EaziAlignment.start);
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       updateRowMapForSmallerScreens(context);
     });
@@ -60,12 +58,10 @@ class _EaziGridState extends State<EaziGrid> {
         builder: (context, constraints){
           if(maxWidth<constraints.maxWidth){
             WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-              drawBackWidgetFromBottomRow(context);
+              adjustForLargeScreen(context);
             });
           }
           maxWidth = constraints.maxWidth;
-          maxHeight = constraints.maxWidth;
-
           if(widget.isScrollable){
             return SingleChildScrollView(
               child: _getMainWidget(),
@@ -118,16 +114,6 @@ class _EaziGridState extends State<EaziGrid> {
   }
 
 
-  RowWidget _getAndSaveRowForRange(BuildContext context, List<int> indices, [GlobalKey? globalKey]) {
-    final row = RowWidget(
-      key: globalKey??GlobalKey(),
-      mainAxisAlignment: _getAlignmentFromEaziAlignment(widget.horizontalAlignment),
-      children: widget.children.sublist(indices[0], indices.last+1),
-    );
-    usedRowKeys[row.key] = row;
-    return row;
-  }
-
   void clearMapToRebuild(){
     widthRowChildrenMap.clear();
   }
@@ -136,7 +122,13 @@ class _EaziGridState extends State<EaziGrid> {
     bool madeChange = false;
     final usedRowKeys = this.usedRowKeys;
     List<Widget> lastChildren = [];
-    double k=0;
+
+    List<List<int>> cache = [];
+    int startIndex = 0;
+    updateCache(List<Widget> tempList){
+      cache.add([startIndex, startIndex+tempList.length]);
+      startIndex+=tempList.length;
+    }
     for(GlobalKey globalKey in usedRowKeys.keys){
       MediaQuery.of(context).size.width; /// This weird line must be present to shrink width 🤨
       if(lastChildren.length > 0){
@@ -148,6 +140,8 @@ class _EaziGridState extends State<EaziGrid> {
           lastChildren.clear();
         }
         addItemsRow(context, tempList, globalKey);
+        // caching screen indices
+        updateCache(tempList);
       }else{
         if (globalKey.currentContext!.size!.width >= maxWidth) {
           if (usedRowKeys[globalKey]!.children.length == 1) continue;
@@ -156,24 +150,38 @@ class _EaziGridState extends State<EaziGrid> {
           addItemsRow(context, tempList, globalKey);
           // Push child to next row - (1) remove last 2 children of next row child if size > maxSize
           madeChange = true;
+          // caching screen indices
+          updateCache(tempList);
         }
       }
     }
     if(lastChildren.length > 0){
       addItemsRow(context, lastChildren);
+      updateCache(lastChildren);
     }
+    widthRowChildrenMap[maxWidth] = cache;
     if(madeChange){
       rebuild();
     }
   }
 
-  drawBackWidgetFromBottomRow(BuildContext context){
-    usedRowKeys.clear();
-    addItemsRow(context, widget.children.toList());
+  adjustForLargeScreen(BuildContext context){
+    if(widthRowChildrenMap.containsKey(maxWidth)){
+      rebuildFromCache(maxWidth);
+    }else{
+      usedRowKeys.clear();
+      addItemsRow(context, widget.children.toList());
+    }
     rebuild();
   }
 
   void rebuild() {
     if(mounted) setState(() {});
+  }
+
+  void rebuildFromCache(double maxWidth) {
+    for(final indexList in widthRowChildrenMap[maxWidth]!){
+
+    }
   }
 }
