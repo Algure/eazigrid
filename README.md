@@ -32,7 +32,7 @@ dependencies:
   eazigrid: ^[latest_version]
   ```
   
-Resolve overflow issues for automated testing by adding the following line to the main flutter file.
+Resolve overflow issues for automated testing by adding the following line to the main method in the main flutter file.
 ```dart
   EaziGridFlowHandler.handleEaziError();
 ```
