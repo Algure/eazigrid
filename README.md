@@ -38,13 +38,19 @@ Resolve overflow issues for automated testing by adding the following line to th
 ```
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+
+Declare `EaziGrid` in a parent widget with width != infinty (See [example](https://github.com/Algure/eazigrid/blob/8b2cab3258a0a1fd33dcea268e47bb8b94b057ea/example/lib/main.dart#L48))
 
 ```dart
-const like = 'sample';
+EaziGrid(
+  isScrollable: true,
+  horizontalAlignment: EaziAlignment.start,
+  children: [
+  for(int i=0; i<=widget.totalItems; i++)
+    TestGridItem(itemIndex: i)
+])
 ```
-
+`isScrollable`
 ## Additional information
 
 TODO: Tell users more about the package: where to find more information, how to 
