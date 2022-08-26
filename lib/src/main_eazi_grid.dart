@@ -5,21 +5,34 @@ import 'package:eazigrid/src/eazi_row_widget.dart';
 import 'package:eazigrid/src/utilities.dart';
 import 'package:flutter/material.dart';
 
-///
+
+
 class EaziGrid extends StatefulWidget {
+  /// Makes final resulting grid vertically scrollable if set to true.
   bool isScrollable;
 
-  /// horizontalAlignment aligns children in each row to any of the options in [EaziAlignment]
+  /// Aligns children in each row to any of the options in [EaziAlignment]
   EaziAlignment horizontalAlignment;
+
+  /// If vertical height is explicitly defned, verticalAlignment aligns grid rows
+  /// to any of the options in [EaziAlignment].
+  /// Entire Widget is prone to erratic behaviour when [isScrollable]
+  /// is set to true with other verticalAlignment is set to value other than [EaziAlignment.start]
   EaziAlignment verticalAlignment;
+
+  ///  All children must be widgets with explicitly defined heights and widths.
   List<Widget> children;
 
+  /// Row to Grid Widget. Should be child of constrained parent widget i.e width
+  /// of parent widget must be explicitly defined and vertical height shrinks to wrap resulting grid if
+  /// left undefined.
   EaziGrid({
     required this.children,
     this.horizontalAlignment = EaziAlignment.start,
     this.verticalAlignment = EaziAlignment.start,
     this.isScrollable = false
   }){
+    if(isScrollable)assert(verticalAlignment==EaziAlignment.start);
   }
 
   @override
@@ -109,7 +122,7 @@ class _EaziGridState extends State<EaziGrid> {
     List<Widget> lastChildren = [];
     double k=0;
     for(GlobalKey globalKey in usedRowKeys.keys){
-      MediaQuery.of(context).size.width; /// This weird line must be present 🤨
+      MediaQuery.of(context).size.width; /// This weird line must be present to shrink width 🤨
       if(lastChildren.length > 0){
         var tempList = usedRowKeys[globalKey]!.children;
         tempList.insertAll(0, lastChildren);
