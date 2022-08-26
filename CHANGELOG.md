@@ -1,3 +1,3 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+Added row to list/grid functionality with provision make widget scrollable.

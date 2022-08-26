@@ -6,22 +6,21 @@ import 'package:eazigrid/src/utilities.dart';
 import 'package:flutter/material.dart';
 
 
-
 class EaziGrid extends StatefulWidget {
   /// Makes final resulting grid vertically scrollable if set to true.
-  bool isScrollable;
+  final bool isScrollable;
 
   /// Aligns children in each row to any of the options in [EaziAlignment]
-  EaziAlignment horizontalAlignment;
+  final EaziAlignment horizontalAlignment;
 
   /// If vertical height is explicitly defned, verticalAlignment aligns grid rows
   /// to any of the options in [EaziAlignment].
   /// Entire Widget is prone to erratic behaviour when [isScrollable]
   /// is set to true with other verticalAlignment is set to value other than [EaziAlignment.start]
-  EaziAlignment verticalAlignment;
+  final EaziAlignment verticalAlignment;
 
   ///  All children must be widgets with explicitly defined heights and widths.
-  List<Widget> children;
+  final List<Widget> children;
 
   /// Row to Grid Widget. Should be child of constrained parent widget i.e width
   /// of parent widget must be explicitly defined and vertical height shrinks to wrap resulting grid if
@@ -160,5 +159,4 @@ class _EaziGridState extends State<EaziGrid> {
   void rebuild() {
     if(mounted) setState(() {});
   }
-
 }

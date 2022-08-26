@@ -42,19 +42,21 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: EaziGrid(
-              isScrollable: true,
-              horizontalAlignment: EaziAlignment.start,
-              children: [
-              for(int i=0; i<=widget.totalItems; i++)
-                TestGridItem(itemIndex: i)
-            ]),
-          ),
-          Text('EaziGrid', style: TextStyle(fontSize: 30),)
-        ]
+      body: OverflowBox(
+        child: Column(
+          children: [
+            Expanded(
+              child: EaziGrid(
+                isScrollable: true,
+                horizontalAlignment: EaziAlignment.start,
+                children: [
+                for(int i=0; i<=widget.totalItems; i++)
+                  TestGridItem(itemIndex: i)
+              ]),
+            ),
+            Text('EaziGrid', style: TextStyle(fontSize: 30),)
+          ]
+        ),
       ),
     );
   }
@@ -71,7 +73,10 @@ class TestGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(8)
+      ),
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(10),
       child: Column(
