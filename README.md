@@ -34,7 +34,7 @@ dependencies:
   
 Resolve overflow issues for automated testing by adding the following line to the main flutter file.
 ```dart
-const like = 'sample';
+  EaziGridFlowHandler.handleEaziError();
 ```
 ## Usage
 
