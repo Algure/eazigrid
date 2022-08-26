@@ -18,7 +18,7 @@ dimensions of containing widget.
 
 - Width of parent widget must be explicitly defined. 
 - Height automatically shrinks and expands to wrap parent widget if height of parent is left unspecified.
-- Children can be made vertically scrollable if bool variable: `isScrollable` is set to true.
+- Children can be made vertically scrollable if the parameter `isScrollable` is set to true.
 
 ## Getting started
 
