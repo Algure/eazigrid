@@ -11,17 +11,22 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-Easy dynamic flutter row to list/gridview. Starts out as a row and resizes to grid or ultimately list view depending on 
+Easy dynamic flutter row to list/gridview. Starts out as a row and resizes to a grid and ultimately to a list view depending on 
 dimensions of containing widget.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Width of parent widget must be explicitly defined. 
+- Height automatically shrinks and expands to wrap parent widget if height of parent is left unspecified.
+- Children can be made vertically scrollable if bool variable: `isScrollable` is set to true.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add package dependency to pubspec.yaml
+
+```yaml
+const like = 'sample';
+```
 
 ## Usage
 
