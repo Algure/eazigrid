@@ -50,7 +50,12 @@ EaziGrid(
     TestGridItem(itemIndex: i)
 ])
 ```
-`isScrollable`
+### Widget Parameters
+`isScrollable`: Makes resulting grid vertically scrollable if set to true.
+`horizontalAlignment`: Aligns children in each row to any of the options in `EaziAlignment`.
+`verticalAlignment`: Aligns grid rows vertically to any of the options in  `EaziAlignment`.
+`children`: All children must be widgets with explicitly defined heights and widths.
+
 ## Additional information
 
 TODO: Tell users more about the package: where to find more information, how to 
