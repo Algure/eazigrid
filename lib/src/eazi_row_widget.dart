@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class RowWidget extends StatefulWidget {
-  const RowWidget({Key? key, required this.mainAxisAlignment, required this.children, }) : super(key: key);
+  const RowWidget({Key? key,
+    required this.mainAxisAlignment,
+    required this.children}) : super(key: key);
 
   final  List<Widget> children;
   final  MainAxisAlignment mainAxisAlignment;

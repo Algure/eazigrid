@@ -24,9 +24,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title, this.totalItems = 30}) : super(key: key);
 
   final String title;
+  final double totalItems;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -43,25 +44,30 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: SingleChildScrollView(
-        child: EaziGrid(
-            horizontalAlignment: EaziAlignment.start,
-            children: [
-          for(int i=0; i<30; i++)
-            Container(
-              color: Colors.blue,
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.description, color: Colors.white,),
-                  const SizedBox(height: 5,),
-                  Text('test item: $i', style: TextStyle(color: Colors.white),)
-                ],
-              ),
-            )
-        ]),
+        child: Column(
+          children: [
+            EaziGrid(
+              horizontalAlignment: EaziAlignment.start,
+              children: [
+            for(int i=0; i<=widget.totalItems; i++)
+              Container(
+                color: Colors.blue,
+                margin: EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.description, color: Colors.white,),
+                    const SizedBox(height: 5,),
+                    Text('test item: $i', style: TextStyle(color: Colors.white),)
+                  ],
+                ),
+              )
+          ]),
+            Text('EaziGrid', style: TextStyle(fontSize: 30),)
+          ]
+        ),
       ),
     );
   }

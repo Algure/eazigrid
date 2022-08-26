@@ -6,6 +6,7 @@ import 'package:eazigrid/src/utilities.dart';
 import 'package:flutter/material.dart';
 
 class EaziGrid extends StatefulWidget {
+  bool isScrollable;
   EaziAlignment horizontalAlignment;
   EaziAlignment verticalAlignment;
   List<Widget> children;
@@ -14,8 +15,8 @@ class EaziGrid extends StatefulWidget {
     required this.children,
     this.horizontalAlignment = EaziAlignment.start,
     this.verticalAlignment = EaziAlignment.start,
-  }){
-  }
+    this.isScrollable = false
+  });
 
   @override
   State<EaziGrid> createState() => _EaziGridState();
@@ -47,20 +48,27 @@ class _EaziGridState extends State<EaziGrid> {
           }
           maxWidth = constraints.maxWidth;
           maxHeight = constraints.maxWidth;
-          return Container(
-            child: Column(
-              mainAxisAlignment: _getAlignmentFromEaziAlignment(widget.verticalAlignment),
-              crossAxisAlignment: _getCrossAxisAlignmentFromEaziAlignment(widget.horizontalAlignment),
-              children: [
-                for(GlobalKey key in usedRowKeys.keys)
-                  usedRowKeys[key]!,
-              ],
-            ),
-          );
+          if(widget.isScrollable){
+              return SingleChildScrollView(
+                child: _getMainWidget(),
+              );
+            }else {
+              return _getMainWidget();
+            }
         }
     );
   }
 
+  Widget _getMainWidget() => Container(
+    child: Column(
+      mainAxisAlignment: _getAlignmentFromEaziAlignment(widget.verticalAlignment),
+      crossAxisAlignment: _getCrossAxisAlignmentFromEaziAlignment(widget.horizontalAlignment),
+      children: [
+        for(GlobalKey key in usedRowKeys.keys)
+          usedRowKeys[key]!,
+      ],
+    ),
+  );
 
   MainAxisAlignment _getAlignmentFromEaziAlignment(EaziAlignment eaziAlignment) {
     if(eaziAlignment == EaziAlignment.start) {
