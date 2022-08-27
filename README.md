@@ -32,6 +32,9 @@ Resolve overflow issues for automated testing by adding the following line to th
 ## Usage
 
 
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/37802577/187007067-23ef244f-4e4d-4cd1-8942-5187c88e3a99.gif)
+
+
 Declare `EaziGrid` in a parent widget with width != infinty (See [example](https://github.com/Algure/eazigrid/blob/8b2cab3258a0a1fd33dcea268e47bb8b94b057ea/example/lib/main.dart#L48))
 
 ```dart
