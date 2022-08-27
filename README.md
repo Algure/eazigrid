@@ -4,13 +4,13 @@
 
 ![EAZI GRID](https://user-images.githubusercontent.com/37802577/186935121-319f3f03-c356-4a95-8a54-1e2f2768f410.png)
 
-Easy dynamic Flutter row to list/gridview. Starts out as a row and resizes to a grid - scaling to
-dimensions of containing widget.
+Easy dynamic Flutter row to list/grid. Starts out as a row and resizes to a grid - scaling to
+dimensions of parent widget.
 
 ## Features
 
 - Width of parent widget must be explicitly defined. 
-- Height automatically shrinks and expands to wrap parent widget if height of parent is left unspecified.
+- Height automatically shrinks or expands to wrap parent widget if height of parent is left unspecified.
 - Children can be made vertically scrollable if the parameter `isScrollable` is set to true.
 
 ## Getting started
@@ -46,14 +46,16 @@ EaziGrid(
     TestGridItem(itemIndex: i)
 ])
 ```
-### Widget Parameters
-- `isScrollable`: Makes resulting grid vertically scrollable if set to true.
-- `horizontalAlignment`: Aligns children in each row to any of the options in `EaziAlignment`.
-- `verticalAlignment`: Aligns grid rows vertically to any of the options in  `EaziAlignment`.
-- `children`: All children must be widgets with explicitly defined heights and widths.
+##### Widget Parameters
+- `isScrollable`: makes resulting grid vertically scrollable if set to true.
+- `horizontalAlignment`: aligns children in each row by any of the options defined in `EaziAlignment`.
+- `verticalAlignment`: aligns grid rows vertically by any of the options in defined `EaziAlignment`.
+- `children`: all children must be widgets with explicitly defined heights and widths.
+
+>   enum EaziAlignment { start, center, end }
 
 ## Additional information
 
-Please feel free to open issues for feature requests. If you'd like to contribute, send a PR.
+Feel free to open issues for feature requests. If you'd like to contribute, send a PR.
 
 TODO: 🤔 HAVE FUN 😬
