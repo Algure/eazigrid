@@ -45,6 +45,7 @@ class _EaziGridState extends State<EaziGrid> {
   @override
   void initState() {
     addItemsRow(context, widget.children);
+    super.initState();
   }
 
   @override

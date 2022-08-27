@@ -16,7 +16,7 @@ class EaziGridFlowHandler {
   /// would be triggered when Flutter Exceptions occur
   static void handleEaziError([FlutterExceptionHandler? otherErrorHandler]){
     EaziGridFlowHandler._otherErrorHandler = otherErrorHandler;
-    FlutterError.onError = _onError_ignoreEaziOverflowErrors as FlutterExceptionHandler?;
+    FlutterError.onError = _onError_ignoreEaziOverflowErrors;
   }
 
   /// Main error handler method to be used to detect and cancel RenderFlex errors from [RowWidget]
@@ -24,7 +24,6 @@ class EaziGridFlowHandler {
       FlutterErrorDetails details, {
         bool forceReport = false,
       }) {
-    assert(details != null);
     assert(details.exception != null);
 
     bool ifIsOverflowError = false;

@@ -1,5 +1,6 @@
 name: eazigrid
-description: Easy dynamic flutter row to list/gridview.
+description: Easy dynamic flutter row to list/grid widget. This widget arranges children as a row and or grid depending on the constraints of it's parent.
+homepage: https://github.com/Algure/eazigrid
 version: 0.0.1
 
 
