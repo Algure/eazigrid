@@ -25,11 +25,8 @@ class EaziGridFlowHandler {
 
     final exception = details.exception;
     if (exception is FlutterError) {
-      ifIsOverflowError = !exception.diagnostics.any((e) {
-        final errorVal = e.value.toString();
-        return errorVal.startsWith("A RenderFlex overflowed by") &&
-            errorVal.contains("eazi_row_widget.dart");
-      });
+      final errorVal = details.toString();
+      ifIsOverflowError =  errorVal.contains("eazi_row_widget.dart");
     }
     if (ifIsOverflowError) {
       // Is gone

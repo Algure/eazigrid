@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 /// Row component widgets seperated to assign individual BuildContexts to GlobalKeys used in
 /// [EaziGrid]'s [updateRowMapForSmallerScreens] method
-class RowWidget extends StatefulWidget {
-  const RowWidget(
+class EaziRowWidget extends StatefulWidget {
+  const EaziRowWidget(
       {Key? key, required this.mainAxisAlignment, required this.children})
       : super(key: key);
 
@@ -11,10 +11,10 @@ class RowWidget extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
 
   @override
-  State<RowWidget> createState() => _RowWidgetState();
+  State<EaziRowWidget> createState() => _EaziRowWidgetState();
 }
 
-class _RowWidgetState extends State<RowWidget> {
+class _EaziRowWidgetState extends State<EaziRowWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(

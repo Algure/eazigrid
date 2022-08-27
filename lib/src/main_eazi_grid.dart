@@ -5,7 +5,7 @@ import 'package:eazigrid/src/utilities.dart';
 import 'package:flutter/material.dart';
 
 class EaziGrid extends StatefulWidget {
-  /// Makes final resulting grid vertically scrollable if set to true.
+  /// Makes final grid vertically scrollable if set to true.
   final bool isScrollable;
 
   /// Aligns children in each row to any of the options in [EaziAlignment]
@@ -14,14 +14,14 @@ class EaziGrid extends StatefulWidget {
   /// If vertical height is explicitly defned, verticalAlignment aligns grid rows
   /// to any of the options in [EaziAlignment].
   /// Entire Widget is prone to erratic behaviour when [isScrollable]
-  /// is set to true with other verticalAlignment is set to value other than [EaziAlignment.start]
+  /// is set to true with verticalAlignment set to a value other than [EaziAlignment.start]
   final EaziAlignment verticalAlignment;
 
   ///  All children must be widgets with explicitly defined heights and widths.
   final List<Widget> children;
 
   /// Row to Grid Widget. Should be child of constrained parent widget i.e width
-  /// of parent widget must be explicitly defined and vertical height shrinks to wrap resulting grid if
+  /// of parent widget must be explicitly defined and vertical height shrinks to wrap resulting grid if height is
   /// left undefined.
   const EaziGrid(
       {required this.children,
@@ -35,8 +35,8 @@ class EaziGrid extends StatefulWidget {
 
 class _EaziGridState extends State<EaziGrid> {
   double maxWidth = 0;
-  LinkedHashMap<dynamic, RowWidget> usedRowKeys =
-      LinkedHashMap<dynamic, RowWidget>();
+  LinkedHashMap<dynamic, EaziRowWidget> usedRowKeys =
+      LinkedHashMap<dynamic, EaziRowWidget>();
 
   @override
   void initState() {
@@ -104,7 +104,7 @@ class _EaziGridState extends State<EaziGrid> {
 
   void addItemsRow(BuildContext context, List<Widget> tempList,
       [GlobalKey? globalKey]) {
-    final row = RowWidget(
+    final row = EaziRowWidget(
       key: globalKey ?? GlobalKey(),
       mainAxisAlignment:
           _getAlignmentFromEaziAlignment(widget.horizontalAlignment),
