@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(children: [
           Expanded(
             child: EaziGrid(
-              isScrollable: true,
+                isScrollable: true,
                 horizontalAlignment: EaziAlignment.start,
                 children: [
                   for (int i = 0; i <= widget.totalItems; i++)

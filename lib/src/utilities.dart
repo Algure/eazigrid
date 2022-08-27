@@ -26,7 +26,7 @@ class EaziGridFlowHandler {
     final exception = details.exception;
     if (exception is FlutterError) {
       final errorVal = details.toString();
-      ifIsOverflowError =  errorVal.contains("eazi_row_widget.dart");
+      ifIsOverflowError = errorVal.contains("eazi_row_widget.dart");
     }
     if (ifIsOverflowError) {
       // Is gone
